@@ -51,7 +51,9 @@
     // return "What is the answer to life, the universe, and everything?";
     const options = [
       "What is the answer to life, the universe, and everything?",
-      "",
+      `What is ${quiz.title}'s favourite food?`,
+      `What is ${quiz.title}'s favourite drink?`,
+      `Where does ${quiz.title} want to go the most?`,
     ];
     return options[Math.floor(Math.random() * options.length)];
   }
