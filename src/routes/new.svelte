@@ -69,7 +69,7 @@
         //@ts-ignore
         quiz.questions[questionIndex].choices[choiceIndex] = placeholder;
       }
-      console.log(quiz);
+      // console.log(quiz);
       updateDraft();
       e.target.select();
     }
@@ -113,16 +113,6 @@
       "🍛 Salad",
       "🍱 Sandwich",
       "🍲 Cake",
-    ],
-    "What is {0}'s favourite drink?": [
-      "🍺 Beer",
-      "🍵 Tea",
-      "🍻 Cocktail",
-      "🍸 Cocktail",
-      "🍹 Wine",
-      "🍷 Wine",
-      "🍴 Wine",
-      "🍳 Steak",
     ],
     "What is {0}'s favourite colour?": [
       "❤ Red",
@@ -168,10 +158,16 @@
 
   function generateRandomQuestion() {
     lastPickedQuestion = randomFromArr(Object.keys(lookupTable));
+    // console.log(lastPickedQuestion);
+    //@ts-ignore
+    return lastPickedQuestion.format(quiz.title);
+  }
+  function getFormattedQuestion() {
     //@ts-ignore
     return lastPickedQuestion.format(quiz.title);
   }
   function generateRandomChoice() {
+    // console.log(lastPickedQuestion);
     //@ts-ignore
     const choices = lookupTable[lastPickedQuestion];
     return randomFromArr<string>(choices);
@@ -201,6 +197,12 @@
 <div class="p-5 mb-4 bg-light rounded-3">
   <div class="container-fluid py-5">
     <h1 class="display-5 fw-bold text-center">Make your own quiz</h1>
+    <p class="fs-5 text-center">
+      Click the box to make the suggestion come alive
+    </p>
+    <p class="fs-5 text-center">
+      Hit the refresh button to generate new suggestions
+    </p>
   </div>
 </div>
 
@@ -225,7 +227,7 @@
           Question {i + 1}
         </div>
         <div class="card-body">
-          <h5 class="card-title">Title</h5>
+          <h6 class="card-title">Title</h6>
           <div class="d-flex flex-row">
             <input
               type="text"
@@ -234,7 +236,7 @@
               on:click={relayPlaceholder}
               class="form-control rounded-0 rounded-start"
               id={`question${i}Title`}
-              placeholder={generateRandomQuestion()}
+              placeholder={getFormattedQuestion()}
             />
             <button
               class="btn btn-danger rounded-0 rounded-end"
@@ -258,7 +260,7 @@
 
           <!-- svelte-ignore a11y-label-has-associated-control -->
           <!-- <label>Question {i + 1} answers</label> -->
-          <h5 class="card-title">Choices</h5>
+          <h6 class="card-title mb-1">Choices</h6>
           {#each quiz.questions[i].choices || [""] as choice, ic}
             <div class="form-check">
               <input
@@ -356,6 +358,7 @@
           class="btn btn-primary"
           type="button"
           on:click={() => {
+            generateRandomQuestion();
             if (!quiz.questions) quiz.questions = [];
             quiz.questions.push({
               //@ts-ignore
