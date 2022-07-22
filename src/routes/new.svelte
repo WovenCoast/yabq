@@ -78,37 +78,33 @@
 
   let nameEl: HTMLInputElement;
 
-  function generateRandomQuestion() {
-    // return "What is the answer to life, the universe, and everything?";
-    const options = [
-      "What is the answer to life, the universe, and everything?",
-      `What is ${quiz.title}'s favourite food?`,
-      `What is ${quiz.title}'s favourite drink?`,
-      `Where does ${quiz.title} want to go the most?`,
-    ];
-    return options[Math.floor(Math.random() * options.length)];
+  function randomFromArr<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
   }
-  function generateRandomChoice() {
-    const options = [
+  //@ts-ignore
+  String.prototype.format = function (...args) {
+    // use replace to iterate over the string
+    // select the match and check if related argument is present
+    // if yes, replace the match with the argument
+    return this.replace(/{([0-9]+)}/g, function (match, index) {
+      // check if the argument is present
+      return typeof args[index] == "undefined" ? match : args[index];
+    });
+  };
+
+  const lookupTable = {
+    "What is the answer to life, the universe, and everything?": [
       "42",
-      "🥒 A pickle",
       "49",
+      "69",
+      "420",
+      "360",
       "🥸 Nerd",
       "💡 Light Bulb",
       "🏆 Trophy",
-      "🇰🇷 Korea",
-      "🇯🇵 Japan",
-      "🇬🇧 Britain",
-      "🇺🇸 USA",
-      "🇫🇷 France",
-      "🇪🇸 Spain",
-      "🇮🇹 Italy",
-      "🇨🇦 Canada",
-      "📺 Watch Netflix",
-      "📱 Call your mom",
-      "🏌‍️ Go and play sports",
-      "🎧 Listen to music",
-      "💻 Use a computer",
+      "🥒 A pickle",
+    ],
+    "What is {0}'s favourite food?": [
       "🍔 Burger",
       "🍟 Fries",
       "🍕 Pizza",
@@ -117,8 +113,68 @@
       "🍛 Salad",
       "🍱 Sandwich",
       "🍲 Cake",
-    ];
-    return options[Math.floor(Math.random() * options.length)];
+    ],
+    "What is {0}'s favourite drink?": [
+      "🍺 Beer",
+      "🍵 Tea",
+      "🍻 Cocktail",
+      "🍸 Cocktail",
+      "🍹 Wine",
+      "🍷 Wine",
+      "🍴 Wine",
+      "🍳 Steak",
+    ],
+    "What is {0}'s favourite colour?": [
+      "❤ Red",
+      "💚 Green",
+      "💙 Blue",
+      "💜 Purple",
+      "💖 Pink",
+      "💛 Yellow",
+      "🖤 Black",
+    ],
+    "What is {0}'s favourite animal?": [
+      "🐶 Dog",
+      "🐱 Cat",
+      "🐭 Lion",
+      "🐹 Tiger",
+      "🐯 Lion",
+      "🐰 Cow",
+      "🐻 Bear",
+      "🐴 Horse",
+    ],
+    "Where does {0} want to go the most?": [
+      "🇰🇷 Korea",
+      "🇯🇵 Japan",
+      "🇬🇧 Britain",
+      "🇺🇸 USA",
+      "🇫🇷 France",
+      "🇪🇸 Spain",
+      "🇮🇹 Italy",
+      "🇨🇦 Canada",
+    ],
+    "What does {0} like doing the most?": [
+      "🎤 Listening to music",
+      "🎨 Drawing",
+      "🎭 Acting",
+      "📺 Watching Netflix",
+      "📱 Calling your mom",
+      "🏌‍️ Playing sports",
+      "🎧 Listening to music",
+      "🎴 Playing games",
+    ],
+  };
+  let lastPickedQuestion: string = randomFromArr(Object.keys(lookupTable));
+
+  function generateRandomQuestion() {
+    lastPickedQuestion = randomFromArr(Object.keys(lookupTable));
+    //@ts-ignore
+    return lastPickedQuestion.format(quiz.title);
+  }
+  function generateRandomChoice() {
+    //@ts-ignore
+    const choices = lookupTable[lastPickedQuestion];
+    return randomFromArr<string>(choices);
   }
 
   function _submit() {
