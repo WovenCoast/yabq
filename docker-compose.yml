@@ -17,8 +17,8 @@ services:
   yabq:
     image: wovencoast/yabq
     build: .
-    env_file:
-      - ./.env
+    # env_file:
+    #   - ./.env
     depends_on:
        - mongo
     container_name: yabq-docker
