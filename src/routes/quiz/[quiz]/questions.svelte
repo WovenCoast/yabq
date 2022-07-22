@@ -7,10 +7,10 @@
   export let quiz: QuizSecure;
   export let name: string;
 
-  onMount(() => {
-    document.getElementById("focusShift")?.focus();
-    document.getElementById("focusShift")?.remove();
-  });
+  // onMount(() => {
+  //   document.getElementById("focusShift")?.focus();
+  //   document.getElementById("focusShift")?.remove();
+  // });
 
   // let userId = document.cookie.includes("YABQUserId")
   //   ? document.cookie
@@ -77,9 +77,9 @@
   </div>
   <div class="container">
     <div class="list-group">
-      <button class="list-group-item list-group-item-action" id="focusShift">
+      <!-- <button class="list-group-item list-group-item-action" id="focusShift">
         bruh
-      </button>
+      </button> -->
       {#each quiz.questions[currentQ].choices as choice, id}
         <button
           class={`list-group-item text-start ${
