@@ -10,9 +10,9 @@ class Mongo {
   connected: boolean = false;
   db: Db | null | undefined = null;
   constructor() {
-    // this.url = "mongodb://mongo/?authMechanism=DEFAULT";
-    this.url =
-      "mongodb://mongoadmin:nubunaanan01@localhost:27017/?authMechanism=DEFAULT";
+    this.url = "mongodb://mongo/?authMechanism=DEFAULT";
+    // this.url =
+    //   "mongodb://mongoadmin:nubunaanan01@localhost:27017/?authMechanism=DEFAULT";
     this.connect();
   }
   connect() {
