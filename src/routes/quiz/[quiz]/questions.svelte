@@ -3,8 +3,14 @@
   import type { QuizSecure, QuizSubmission } from "#lib/Quiz";
   import Head from "../../../components/Head.svelte";
   import Footer from "../../../components/Footer.svelte";
+  import { onMount } from "svelte";
   export let quiz: QuizSecure;
   export let name: string;
+
+  onMount(() => {
+    document.getElementById("focusShift")?.focus();
+    document.getElementById("focusShift")?.remove();
+  });
 
   // let userId = document.cookie.includes("YABQUserId")
   //   ? document.cookie
@@ -71,9 +77,12 @@
   </div>
   <div class="container">
     <div class="list-group">
+      <button class="list-group-item list-group-item-action" id="focusShift">
+        bruh
+      </button>
       {#each quiz.questions[currentQ].choices as choice, id}
         <button
-          class={`list-group-item list-group-item-action ${
+          class={`list-group-item text-start ${
             showAnswer && quiz.questions[currentQ].correct === id
               ? "bg-success text-white"
               : ""

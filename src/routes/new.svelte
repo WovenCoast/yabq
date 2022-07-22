@@ -48,7 +48,32 @@
   let nameEl: HTMLInputElement;
 
   function generateRandomQuestion() {
-    return "What is the answer to life, the universe, and everything?";
+    // return "What is the answer to life, the universe, and everything?";
+    const options = [
+      "What is the answer to life, the universe, and everything?",
+      "",
+    ];
+    return options[Math.floor(Math.random() * options.length)];
+  }
+  function generateRandomChoice() {
+    const options = [
+      "42",
+      "🥒 A pickle",
+      "49",
+      "🥸 Nerd",
+      "💡 Light Bulb",
+      "🏆 Trophy",
+      "🇰🇷 Korea",
+      "🍔 Burger",
+      "🍟 Fries",
+      "🍕 Pizza",
+      "🍗 Fish",
+      "🍝 Pasta",
+      "🍛 Salad",
+      "🍱 Sandwich",
+      "🍲 Cake",
+    ];
+    return options[Math.floor(Math.random() * options.length)];
   }
 
   function _submit() {
@@ -143,7 +168,7 @@
                     id={`question${i}Choice${ic}`}
                     bind:value={choice}
                     on:change={() => updateDraft()}
-                    placeholder="bruh"
+                    placeholder={generateRandomChoice()}
                   />
                   <button
                     class="btn btn-danger rounded-0 rounded-end"

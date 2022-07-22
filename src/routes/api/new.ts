@@ -53,7 +53,9 @@ export async function POST({
     status: 200,
     headers: {
       "Content-Type": "application/json",
-      "Set-Cookie": `YABQMakerId=${quiz.maker}; Path=/`,
+      "Set-Cookie": `YABQMakerId=${quiz.maker}; Path=/; Max-Age=${
+        60 * 60 * 24 * 365
+      }`,
     },
     body: {
       id: result.insertedId,
