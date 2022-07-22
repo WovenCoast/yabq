@@ -1,0 +1,16 @@
+/* Variables and mixins declared here will be available in all other SCSS files */
+@import "bootstrap/scss/functions"; /* Override Bootstrap's variables here */
+@import "bootstrap/scss/variables";
+$theme-colors: (
+  "primary": #FF83FA,
+  "secondary": #0094FF,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark
+);
+@import "bootstrap/scss/mixins";
+
+$fa-font-path: "../node_modules/@fortawesome/fontawesome-free/webfonts/";

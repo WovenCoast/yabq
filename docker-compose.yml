@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    # env_file:
+    #   - ./mongo.env
+    volumes:
+      - yabq-mongo:/data/db
+      - yabq-mongo:/data/configdb
+    # networks:
+    #   - yabq
+    # ports:
+    #   - "5174:27017"
+  yabq:
+    image: wovencoast/yabq
+    build: .
+    env_file:
+      - ./.env
+    depends_on:
+       - mongo
+    container_name: yabq-docker
+    restart: always
+    # networks:
+    #   - yabq
+    ports:
+      - "5173:5173"
+
+volumes:
+  yabq-mongo:
+
+networks:
+    default:
+      driver: bridge
