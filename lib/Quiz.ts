@@ -138,20 +138,30 @@ async function quizValidator(quiz: Partial<Quiz>): Promise<string | Quiz> {
   if (!quiz.questions || quiz.questions.length === 0)
     return "Questions are required";
   if (quiz.questions.length > 20) return "Questions cannot be more than 20";
-  if (quiz.questions.some((question) => !question.title))
-    return "Question title is required";
-  if (quiz.questions.some((question) => !question.choices))
-    return "Question choices are required";
-  if (
-    quiz.questions.some((question) => !(question.correct + 1)) ||
-    !quiz.questions.some((question) => question.correct >= 0) ||
-    !quiz.questions.some(
-      (question) => question.correct < question.choices.length
-    )
-  )
-    return "Question correct answer is required";
-  if (quiz.questions.some((question) => question.choices.length > 8))
-    return "Question choices cannot be more than 8";
+  // if (quiz.questions.some((question) => !question.title))
+  //   return "Question title is required";
+  // if (quiz.questions.some((question) => !question.choices))
+  //   return "Question choices are required";
+  // if (
+  //   quiz.questions.some((question) => !(question.correct + 1)) ||
+  //   !quiz.questions.some((question) => question.correct >= 0) ||
+  //   !quiz.questions.some(
+  //     (question) => question.correct < question.choices.length
+  //   )
+  // )
+  //   return "Question correct answer is required";
+  // if (quiz.questions.some((question) => question.choices.length > 8))
+  //   return "Question choices cannot be more than 8";
+  let error: string | boolean = false;
+  quiz.questions.forEach((question, i) => {
+    if (!question.title) error = `Question ${i + 1} title is required`;
+    if (!question.choices) error = `Question ${i + 1} choices are required`;
+    if (question.choices.length > 8)
+      error = `Question ${i + 1} choices cannot be more than 8`;
+    if (question.correct < 0 || question.correct > question.choices.length)
+      error = `Question ${i + 1} correct answer is required`;
+  });
+  if (error) return error;
 
   if (!mongo.connected) await mongo.connect();
   const existingQuiz = await mongo.db?.collection("quizzes").findOne({

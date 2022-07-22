@@ -17,9 +17,11 @@
         window.scroll({
           left: 0,
           top: scrollPosition,
-          behavior: "auto",
+          //@ts-ignore
+          behavior: "instant",
         });
-      }, 1);
+        // window.scrollTo(0, document.body.scrollHeight);
+      }, 2);
     }, 1);
   }
   let quiz = {
@@ -43,6 +45,35 @@
 
   function updateDraft() {
     ls.setItem("YABQDraft", JSON.stringify(quiz));
+  }
+
+  function relayPlaceholder(e: any) {
+    const { value, placeholder } = e.target;
+
+    if (!value) {
+      e.target.value = placeholder;
+      // console.log(e.target.id);
+      const titleReg = /question(\d+)Title/;
+      const choiceReg = /question(\d+)Choice(\d+)/;
+      if (titleReg.test(e.target.id)) {
+        const [_, questionIndex] = e.target.id.match(titleReg);
+        quiz.questions[questionIndex].title = placeholder;
+      } else if (choiceReg.test(e.target.id)) {
+        const [_, questionIndex, choiceIndex] = e.target.id.match(choiceReg);
+        if (!quiz.questions[questionIndex])
+          //@ts-ignore
+          quiz.questions[questionIndex] = {
+            title: "",
+            choices: [],
+          };
+        //@ts-ignore
+        quiz.questions[questionIndex].choices[choiceIndex] = placeholder;
+      }
+      console.log(quiz);
+      updateDraft();
+      e.target.select();
+    }
+    // update();
   }
 
   let nameEl: HTMLInputElement;
@@ -144,6 +175,7 @@
               type="text"
               bind:value={question.title}
               on:change={() => updateDraft()}
+              on:click={relayPlaceholder}
               class="form-control rounded-0 rounded-start"
               id={`question${i}Title`}
               placeholder={generateRandomQuestion()}
@@ -154,7 +186,16 @@
                 quiz.questions.splice(i, 1);
                 update();
                 updateDraft();
-              }}>X</button
+              }}
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 320 512"
+                ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                  d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"
+                /></svg
+              ></button
             >
           </div>
           <br />
@@ -182,8 +223,26 @@
                     id={`question${i}Choice${ic}`}
                     bind:value={choice}
                     on:change={() => updateDraft()}
+                    on:click={relayPlaceholder}
                     placeholder={generateRandomChoice()}
                   />
+                  {#if !choice}
+                    <button
+                      class="btn btn-secondary rounded-0"
+                      on:click={() => update()}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="1em"
+                        height="1em"
+                        color="white"
+                        viewBox="0 0 512 512"
+                        ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                          d="M464 16c-17.67 0-32 14.31-32 32v74.09C392.1 66.52 327.4 32 256 32C161.5 32 78.59 92.34 49.58 182.2c-5.438 16.81 3.797 34.88 20.61 40.28c16.89 5.5 34.88-3.812 40.3-20.59C130.9 138.5 189.4 96 256 96c50.5 0 96.26 24.55 124.4 64H336c-17.67 0-32 14.31-32 32s14.33 32 32 32h128c17.67 0 32-14.31 32-32V48C496 30.31 481.7 16 464 16zM441.8 289.6c-16.92-5.438-34.88 3.812-40.3 20.59C381.1 373.5 322.6 416 256 416c-50.5 0-96.25-24.55-124.4-64H176c17.67 0 32-14.31 32-32s-14.33-32-32-32h-128c-17.67 0-32 14.31-32 32v144c0 17.69 14.33 32 32 32s32-14.31 32-32v-74.09C119.9 445.5 184.6 480 255.1 480c94.45 0 177.4-60.34 206.4-150.2C467.9 313 458.6 294.1 441.8 289.6z"
+                        /></svg
+                      >
+                    </button>
+                  {/if}
                   <button
                     class="btn btn-danger rounded-0 rounded-end"
                     on:click={() => {
@@ -195,7 +254,16 @@
                       }
                       update();
                       updateDraft();
-                    }}>X</button
+                    }}
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="1em"
+                      height="1em"
+                      viewBox="0 0 320 512"
+                      ><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path
+                        d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"
+                      /></svg
+                    ></button
                   >
                 </div>
               </label>
@@ -261,7 +329,7 @@
     </div>
   </div>
 {:else}
-  <div style="min-height: 100000000em;" />
+  <div style="margin: 100000000px;" class="align-bottom">bruh</div>
 {/if}
 
 <Footer />
