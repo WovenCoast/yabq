@@ -66,6 +66,7 @@
       "💡 Light Bulb",
       "🏆 Trophy",
       "🇰🇷 Korea",
+      "🇯🇵 Japan",
       "🇬🇧 Britain",
       "🇺🇸 USA",
       "🇫🇷 France",

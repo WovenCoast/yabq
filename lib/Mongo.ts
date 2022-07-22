@@ -1,5 +1,6 @@
 import { MongoClient, Db } from "mongodb";
 // import "dotenv/config";
+// import path from "path";
 // import fs from "fs";
 // import { parse } from "dotenv";
 
@@ -10,9 +11,11 @@ class Mongo {
   connected: boolean = false;
   db: Db | null | undefined = null;
   constructor() {
-    this.url = "mongodb://mongo/?authMechanism=DEFAULT";
-    // this.url =
-    //   "mongodb://mongoadmin:nubunaanan01@localhost:27017/?authMechanism=DEFAULT";
+    // console.log(
+    //   parse(fs.readFileSync(path.join(__dirname, "../.env"), "utf8"))
+    // );
+    this.url = import.meta.env.VITE_MONGODB_URI;
+    // console.log(this.url);
     this.connect();
   }
   connect() {
