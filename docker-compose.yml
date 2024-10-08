@@ -15,7 +15,7 @@ services:
     # ports:
     #   - "5174:27017"
   yabq:
-    image: wovencoast/yabq
+    image: flamexode/yabq
     build: .
     # env_file:
     #   - ./.env
